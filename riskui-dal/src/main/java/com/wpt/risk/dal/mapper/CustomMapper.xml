@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wpt.risk.dal.dao.CustomMapper" >
+  <resultMap id="BaseResultMap" type="com.wpt.risk.dal.pojo.Custom" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="persona_id" property="personaId" jdbcType="INTEGER" />
+    <result column="persona" property="persona" jdbcType="VARCHAR" />
+    <result column="custom_category_id" property="customCategoryId" jdbcType="INTEGER" />
+    <result column="custom_category" property="customCategory" jdbcType="VARCHAR" />
+    <result column="custom_name" property="customName" jdbcType="VARCHAR" />
+    <result column="custom_field" property="customField" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="values" property="values" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="added_at" property="addedAt" jdbcType="TIMESTAMP" />
+    <result column="modify_at" property="modifyAt" jdbcType="TIMESTAMP" />
+    <result column="expression_json" property="expressionJson" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, persona_id, persona, custom_category_id, custom_category, custom_name, custom_field, 
+    content, `values`, comment, is_del, added_at, modify_at
+  </sql>
+  <sql id="Blob_Column_List" >
+    expression_json
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wpt.risk.dal.pojo.CustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from custom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from custom
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from custom
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wpt.risk.dal.pojo.CustomExample" >
+    delete from custom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wpt.risk.dal.pojo.Custom" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into custom (persona_id, persona, custom_category_id, 
+      custom_category, custom_name, custom_field, 
+      content, `values`, comment,
+      is_del, added_at, modify_at, 
+      expression_json)
+    values (#{personaId,jdbcType=INTEGER}, #{persona,jdbcType=VARCHAR}, #{customCategoryId,jdbcType=INTEGER}, 
+      #{customCategory,jdbcType=VARCHAR}, #{customName,jdbcType=VARCHAR}, #{customField,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{values,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=TINYINT}, #{addedAt,jdbcType=TIMESTAMP}, #{modifyAt,jdbcType=TIMESTAMP}, 
+      #{expressionJson,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wpt.risk.dal.pojo.Custom" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into custom
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="personaId != null" >
+        persona_id,
+      </if>
+      <if test="persona != null" >
+        persona,
+      </if>
+      <if test="customCategoryId != null" >
+        custom_category_id,
+      </if>
+      <if test="customCategory != null" >
+        custom_category,
+      </if>
+      <if test="customName != null" >
+        custom_name,
+      </if>
+      <if test="customField != null" >
+        custom_field,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="values != null" >
+        `values`,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="addedAt != null" >
+        added_at,
+      </if>
+      <if test="modifyAt != null" >
+        modify_at,
+      </if>
+      <if test="expressionJson != null" >
+        expression_json,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="personaId != null" >
+        #{personaId,jdbcType=INTEGER},
+      </if>
+      <if test="persona != null" >
+        #{persona,jdbcType=VARCHAR},
+      </if>
+      <if test="customCategoryId != null" >
+        #{customCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="customCategory != null" >
+        #{customCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="customName != null" >
+        #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="customField != null" >
+        #{customField,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="values != null" >
+        #{values,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="addedAt != null" >
+        #{addedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAt != null" >
+        #{modifyAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expressionJson != null" >
+        #{expressionJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wpt.risk.dal.pojo.CustomExample" resultType="java.lang.Integer" >
+    select count(*) from custom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update custom
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.personaId != null" >
+        persona_id = #{record.personaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.persona != null" >
+        persona = #{record.persona,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customCategoryId != null" >
+        custom_category_id = #{record.customCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customCategory != null" >
+        custom_category = #{record.customCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customName != null" >
+        custom_name = #{record.customName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customField != null" >
+        custom_field = #{record.customField,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.values != null" >
+        `values` = #{record.values,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=TINYINT},
+      </if>
+      <if test="record.addedAt != null" >
+        added_at = #{record.addedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyAt != null" >
+        modify_at = #{record.modifyAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expressionJson != null" >
+        expression_json = #{record.expressionJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update custom
+    set id = #{record.id,jdbcType=INTEGER},
+      persona_id = #{record.personaId,jdbcType=INTEGER},
+      persona = #{record.persona,jdbcType=VARCHAR},
+      custom_category_id = #{record.customCategoryId,jdbcType=INTEGER},
+      custom_category = #{record.customCategory,jdbcType=VARCHAR},
+      custom_name = #{record.customName,jdbcType=VARCHAR},
+      custom_field = #{record.customField,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      `values` = #{record.values,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      is_del = #{record.isDel,jdbcType=TINYINT},
+      added_at = #{record.addedAt,jdbcType=TIMESTAMP},
+      modify_at = #{record.modifyAt,jdbcType=TIMESTAMP},
+      expression_json = #{record.expressionJson,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update custom
+    set id = #{record.id,jdbcType=INTEGER},
+      persona_id = #{record.personaId,jdbcType=INTEGER},
+      persona = #{record.persona,jdbcType=VARCHAR},
+      custom_category_id = #{record.customCategoryId,jdbcType=INTEGER},
+      custom_category = #{record.customCategory,jdbcType=VARCHAR},
+      custom_name = #{record.customName,jdbcType=VARCHAR},
+      custom_field = #{record.customField,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      `values` = #{record.values,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      is_del = #{record.isDel,jdbcType=TINYINT},
+      added_at = #{record.addedAt,jdbcType=TIMESTAMP},
+      modify_at = #{record.modifyAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wpt.risk.dal.pojo.Custom" >
+    update custom
+    <set >
+      <if test="personaId != null" >
+        persona_id = #{personaId,jdbcType=INTEGER},
+      </if>
+      <if test="persona != null" >
+        persona = #{persona,jdbcType=VARCHAR},
+      </if>
+      <if test="customCategoryId != null" >
+        custom_category_id = #{customCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="customCategory != null" >
+        custom_category = #{customCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="customName != null" >
+        custom_name = #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="customField != null" >
+        custom_field = #{customField,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="values != null" >
+        `values` = #{values,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="addedAt != null" >
+        added_at = #{addedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAt != null" >
+        modify_at = #{modifyAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expressionJson != null" >
+        expression_json = #{expressionJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wpt.risk.dal.pojo.Custom" >
+    update custom
+    set persona_id = #{personaId,jdbcType=INTEGER},
+      persona = #{persona,jdbcType=VARCHAR},
+      custom_category_id = #{customCategoryId,jdbcType=INTEGER},
+      custom_category = #{customCategory,jdbcType=VARCHAR},
+      custom_name = #{customName,jdbcType=VARCHAR},
+      custom_field = #{customField,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      `values` = #{values,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT},
+      added_at = #{addedAt,jdbcType=TIMESTAMP},
+      modify_at = #{modifyAt,jdbcType=TIMESTAMP},
+      expression_json = #{expressionJson,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wpt.risk.dal.pojo.Custom" >
+    update custom
+    set persona_id = #{personaId,jdbcType=INTEGER},
+      persona = #{persona,jdbcType=VARCHAR},
+      custom_category_id = #{customCategoryId,jdbcType=INTEGER},
+      custom_category = #{customCategory,jdbcType=VARCHAR},
+      custom_name = #{customName,jdbcType=VARCHAR},
+      custom_field = #{customField,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      `values` = #{values,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT},
+      added_at = #{addedAt,jdbcType=TIMESTAMP},
+      modify_at = #{modifyAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
